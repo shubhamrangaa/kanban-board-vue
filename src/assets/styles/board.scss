@@ -1,0 +1,23 @@
+.dragContainer {
+  display: flex;
+  justify-content: center;
+  color: white;
+  width: 100%;
+  background-color: rgb(46, 46, 46);
+}
+
+.sortable {
+  background-color: aliceblue;
+  color: black;
+  padding: 0.5rem 1rem;
+  margin: 0.25rem;
+  text-align: left;
+}
+
+.groupContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100px;
+  min-width: 250px;
+  //   flex-direction: column;
+}

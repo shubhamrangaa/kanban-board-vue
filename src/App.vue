@@ -1,19 +1,23 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <img alt="Vue logo" src="./assets/logo.png" />
+    <!-- <firstComp msg="This is the props speaking to Your Vue.js App" /> -->
+    <board></board>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Board from "./components/Board.vue";
+// import HelloWorld from './components/HelloWorld.vue'
+// import firstComp from "./components/firstComp.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    // firstComp,
+    Board,
+  },
+};
 </script>
 
 <style>

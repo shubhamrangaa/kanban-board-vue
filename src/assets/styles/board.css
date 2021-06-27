@@ -1,0 +1,32 @@
+.dragContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: white;
+  width: 100%;
+  background-color: #2e2e2e;
+}
+
+.sortable {
+  background-color: aliceblue;
+  color: black;
+  padding: 0.5rem 1rem;
+  margin: 0.25rem;
+  text-align: left;
+}
+
+.groupContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  min-height: 100px;
+  min-width: 250px;
+}
+/*# sourceMappingURL=board.css.map */
