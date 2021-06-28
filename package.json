@@ -10,6 +10,7 @@
   "dependencies": {
     "buefy": "^0.9.8",
     "core-js": "^3.6.5",
+    "uuid": "^8.3.2",
     "vue": "^2.6.11",
     "vuedraggable": "^2.24.3"
   },
