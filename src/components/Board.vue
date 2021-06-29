@@ -1,100 +1,11 @@
 <template>
   <div class="dragContainer">
-    <!-- TASK LIST FOR STATUS: TODO -->
-    <div class="statusContainer">
-      <h3>Todo - {{ taskList.todoList.length }}</h3>
-
-      <draggable
-        v-model="taskList.todoList"
-        v-bind="dragOptions"
-        :move="onMove"
-      >
-        <transition-group class="groupContainer">
-          <div
-            class="sortable"
-            v-for="element in taskList.todoList"
-            :key="element.id"
-            @click="
-              (isCardModalActive = true),
-                (currTask = element),
-                (currList = taskList.todoList),
-                (currStatus = `todo`)
-            "
-          >
-            {{ element.t_name }}
-          </div>
-        </transition-group>
-      </draggable>
-
-      <b-input
-        placeholder="add new task"
-        v-model="newtask"
-        @keydown.native.enter="add(taskList.todoList, newtask)"
-      ></b-input>
-      <!-- <b-button @click="add(todoList, newtask)">add new task</b-button> -->
-    </div>
-    <!-- TASK LIST FOR STATUS: DOING -->
-    <div class="statusContainer">
-      <h3>Doing - {{ taskList.doingList.length }}</h3>
-      <draggable
-        v-model="taskList.doingList"
-        v-bind="dragOptions"
-        :move="onMove"
-      >
-        <transition-group class="groupContainer">
-          <div
-            class="sortable"
-            v-for="element in taskList.doingList"
-            :key="element.id"
-            @click="
-              (isCardModalActive = true),
-                (currTask = element),
-                (currList = taskList.doingList),
-                (currStatus = `doing`)
-            "
-          >
-            {{ element.t_name }}
-          </div>
-        </transition-group>
-      </draggable>
-
-      <b-input
-        placeholder="add new task"
-        v-model="newDoingTask"
-        @keydown.native.enter="add(taskList.doingList, newDoingTask)"
-      ></b-input>
-      <!-- <b-button @click="add(doingList, newDoingTask)">add new task</b-button> -->
-    </div>
-    <!-- TASK LIST FOR STATUS: DONE -->
-    <div class="statusContainer">
-      <h3>Done - {{ taskList.doneList.length }}</h3>
-      <draggable
-        v-model="taskList.doneList"
-        v-bind="dragOptions"
-        :move="onMove"
-      >
-        <transition-group class="groupContainer">
-          <div
-            class="sortable"
-            v-for="element in taskList.doneList"
-            :key="element.t_name"
-            @click="
-              (isCardModalActive = true),
-                (currTask = element),
-                (currList = taskList.doneList),
-                (currStatus = `done`)
-            "
-          >
-            {{ element.t_name }}
-          </div>
-        </transition-group>
-      </draggable>
-      <b-input
-        placeholder="add new task"
-        v-model="newDoneTask"
-        @keydown.native.enter="add(taskList.doneList, newDoneTask)"
-      ></b-input>
-      <!-- <b-button @click="add(doneList, newDoneTask)">add new task</b-button> -->
+    <div v-for="list in taskList" :key="list.name">
+      <status-column
+        :list.sync="list.content"
+        :name="list.name"
+        @open-modal="openModal"
+      ></status-column>
     </div>
     <!-- MODAL FOR TASKS -->
     <b-modal v-model="isCardModalActive" :width="640" scroll="keep">
@@ -108,7 +19,6 @@
                 class="title is-4"
                 v-model="currTask.t_name"
               >
-                <!-- @keydown.native.enter="update(currTask)" -->
               </b-input>
             </div>
           </div>
@@ -119,33 +29,30 @@
               v-model="currTask.description"
             >
             </b-input>
-            <b-button @click="handleDelete(currList, currTask)">
+            <b-button @click="handleDelete()">
               delete task
             </b-button>
           </div>
         </div>
       </div>
     </b-modal>
-    <!-- <modal-layout name="kgjerio"><h1>hello</h1></modal-layout> -->
-    <!-- <status-column
-      :list="taskList.todoList"
-      :name="todo"
-      @open-modal="iscardModalActive = true"
-    ></status-column> -->
+    <b-input
+      @keydown.native.enter="addColumn"
+      placeholder="add new Status"
+      v-model="newStatus"
+      >add column</b-input
+    >
   </div>
 </template>
 
 <script>
-import draggable from "vuedraggable";
 import "buefy/dist/buefy.css";
 import { v4 as uuidv4 } from "uuid";
-// import statusColumn from "./statusColumn.vue";
-// import ModalLayout from "./modalLayout.vue";
+import StatusColumn from "./statusColumn.vue";
+
 export default {
   components: {
-    draggable,
-    // ModalLayout,
-    // statusColumn,
+    StatusColumn,
   },
 
   data() {
@@ -155,167 +62,89 @@ export default {
       currTask: {},
       isCardModalActive: false,
       newtask: "",
-      newDoingTask: "",
-      newDoneTask: "",
+      newStatus: "",
 
-      taskList: {
-        todoList: [
-          {
-            t_name: "laundry",
-            id: uuidv4(),
-            description: "I need to do my laundry",
-          },
-          {
-            t_name: "clean",
-            id: uuidv4(),
-            description: "I need to do my cleanign",
-          },
-          { t_name: "code", id: uuidv4() },
-        ],
-        doingList: [
-          { t_name: "run", id: uuidv4() },
-          // { t_name: "bath", id: 5 },
-          // { t_name: "vuejs", id: 6 },
-        ],
-        doneList: [
-          { t_name: "shower", id: uuidv4() },
-          // { t_name: "eat", id: 8 },
-          // { t_name: "sleep", id: 9 },
-        ],
-      },
-      editable: true,
-      isDragging: false,
-      delayedDragging: false,
+      taskList: [
+        {
+          name: "Todo",
+          content: [
+            {
+              t_name: "laundry",
+              id: uuidv4(),
+              description: "I need to do my laundry",
+            },
+            {
+              t_name: "clean",
+              id: uuidv4(),
+              description: "I need to do my cleanign",
+            },
+            { t_name: "code", id: uuidv4() },
+          ],
+        },
+        {
+          name: "Doing",
+          content: [{ t_name: "run", id: uuidv4() }],
+        },
+        {
+          name: "Done",
+          content: [{ t_name: "shower", id: uuidv4() }],
+        },
+      ],
     };
   },
   methods: {
-    add(list, task) {
-      if (task) {
-        console.log(task);
-        console.log(list);
-        list.push({ t_name: task, id: uuidv4() });
-        task = "";
-      }
-      // if (list === "todoList") {
-      //   console.log(list);
-      //   this.taskList.todoList.push({ t_name: task, id: uuidv4() });
-      //   task = "";
-      // }
-      // this.save();
+    openModal(element, list, listName) {
+      // console.log(element);
+      // console.log(list);
+      // console.log(listName);
+      this.isCardModalActive = true;
+      this.currList = list;
+      this.currTask = element;
+      this.currStatus = listName;
     },
-    handleDelete(currList, currTask) {
-      console.log(this.currList);
-      console.log(currTask);
-      console.log(currList);
-
-      const taskIndex = currList.findIndex(
-        (element) => element.id == currTask.id
+    handleDelete() {
+      const taskIndex = this.currList.findIndex(
+        (element) => element.id == this.currTask.id
       );
-      console.log(currList[taskIndex].t_name);
-      currList.splice(taskIndex, 1);
-
-      // if (this.currTaskStatus === "todoList") {
-      //   const taskIndex = this.taskList.todoList.findIndex(
-      //     (element) => element.id == currTask.id
-      //   );
-      //   console.log(this.todoList[taskIndex].t_name);
-      //   this.todoList.splice(taskIndex, 1);
-      // } else if (this.currTaskStatus === "doingList") {
-      //   const taskIndex = this.doingList.findIndex(
-      //     (element) => element.id == currTask.id
-      //   );
-      //   console.log(this.doingList[taskIndex].t_name);
-      //   this.doingList.splice(taskIndex, 1);
-      // } else if (this.currTaskStatus === "doneList") {
-      //   const taskIndex = this.doneList.findIndex(
-      //     (element) => element.id == currTask.id
-      //   );
-      //   console.log(this.doneList[taskIndex].t_name);
-      //   this.doneList.splice(taskIndex, 1);
-      // }
+      console.log("deleting this task: ", this.currList[taskIndex].t_name);
+      this.currList.splice(taskIndex, 1);
     },
     save() {
+      console.log(this.taskList);
       localStorage.setItem("taskList", JSON.stringify(this.taskList));
     },
-
-    onMove({ relatedContext, draggedContext }) {
-      const relatedElement = relatedContext.element;
-      const draggedElement = draggedContext.element;
-      return (
-        (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
-      );
+    addColumn() {
+      this.taskList.push({
+        name: this.newStatus,
+        content: [{ t_name: "shower", id: uuidv4() }],
+      });
     },
   },
-  computed: {
-    dragOptions() {
-      return {
-        animation: 0,
-        group: "description",
-        disabled: !this.editable,
-        ghostClass: "ghost",
-      };
-    },
-    listString() {
-      return JSON.stringify(this.list, null, 2);
-    },
-    list2String() {
-      return JSON.stringify(this.list2, null, 2);
-    },
-  },
-  mounted() {
+  created() {
     if (localStorage.taskList) {
-      console.log(this.taskList);
+      console.log("created");
+      // console.log(this.taskList);
       this.taskList = JSON.parse(localStorage.getItem(`taskList`) || "[]");
+      // console.log(this.taskList);
     }
-    // if (localStorage.taskList.todo) {
-    //   this.todoList = JSON.parse(
-    //     localStorage.getItem(`taskList.todoList`) || "[]"
-    //   );
-    // }
-    // if (localStorage.taskList.doing) {
-    //   this.doingList = JSON.parse(
-    //     localStorage.getItem(`taskList.doingList`) || "[]"
-    //   );
-    // }
-    // if (localStorage.taskList.doing) {
-    //   this.doneList = JSON.parse(
-    //     localStorage.getItem(`taskList.doneList`) || "[]"
-    //   );
-    // }
   },
+  // mounted() {
+  //   if (localStorage.taskList) {
+  //     console.log("mounted");
+  //     // console.log(this.taskList);
+  //     this.taskList = JSON.parse(localStorage.getItem(`taskList`) || "[]");
+  //     // console.log(this.taskList);
+  //   }
+  // },
   watch: {
     // WATCH FOR CHANGES IN STATUS ARRAYS AND AUTOMATICALLY SAVE!
-    // todoList(newstuff) {
-    //   localStorage.setItem("todo", JSON.stringify(newstuff));
-    // },
-    // doingList(newstuff) {
-    //   localStorage.setItem("doing", JSON.stringify(newstuff));
-    // },
-    // doneList(newstuff) {
-    //   localStorage.setItem("done", JSON.stringify(newstuff));
-    // },
+
     taskList: {
       deep: true,
       handler(newstuff) {
-        console.log(newstuff);
-
+        console.log("Found new changes");
         localStorage.setItem("taskList", JSON.stringify(newstuff));
       },
-    },
-    // taskList(newstuff) {
-
-    //   console.log(newstuff);
-    //   localStorage.setItem("taskList", JSON.stringify(newstuff));
-    // },
-
-    isDragging(newValue) {
-      if (newValue) {
-        this.delayedDragging = true;
-        return;
-      }
-      this.$nextTick(() => {
-        this.delayedDragging = false;
-      });
     },
   },
 };

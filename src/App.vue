@@ -8,13 +8,10 @@
 
 <script>
 import Board from "./components/Board.vue";
-// import HelloWorld from './components/HelloWorld.vue'
-// import firstComp from "./components/firstComp.vue";
 
 export default {
   name: "App",
   components: {
-    // firstComp,
     Board,
   },
 };
