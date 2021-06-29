@@ -1,48 +1,56 @@
 <template>
-  <div class="dragContainer">
-    <div v-for="list in taskList" :key="list.name">
-      <status-column
-        :list.sync="list.content"
-        :name="list.name"
-        @open-modal="openModal"
-      ></status-column>
-    </div>
-    <!-- MODAL FOR TASKS -->
-    <b-modal v-model="isCardModalActive" :width="640" scroll="keep">
-      <div class="card">
-        <div class="card-content">
-          <div class="media">
-            <div class="media-content">
-              <h4>Status: {{ currStatus }}</h4>
+  <client-only>
+    <div class="dragContainer">
+      <div
+        v-for="list in taskList"
+        :key="list.name"
+        class="groupColumnContainer"
+      >
+        <status-column
+          :list.sync="list.content"
+          :name="list.name"
+          @open-modal="openModal"
+        ></status-column>
+      </div>
+
+      <!-- MODAL FOR TASKS -->
+      <b-modal v-model="isCardModalActive" :width="640" scroll="keep">
+        <div class="card">
+          <div class="card-content">
+            <div class="media">
+              <div class="media-content">
+                <h4>Status: {{ currStatus }}</h4>
+                <b-input
+                  :value="currTask.t_name"
+                  class="title is-4"
+                  v-model="currTask.t_name"
+                >
+                </b-input>
+              </div>
+            </div>
+
+            <div class="content">
               <b-input
-                :value="currTask.t_name"
-                class="title is-4"
-                v-model="currTask.t_name"
+                :value="currTask.description"
+                v-model="currTask.description"
               >
               </b-input>
+              <b-button @click="handleDelete()">
+                delete task
+              </b-button>
             </div>
           </div>
-
-          <div class="content">
-            <b-input
-              :value="currTask.description"
-              v-model="currTask.description"
-            >
-            </b-input>
-            <b-button @click="handleDelete()">
-              delete task
-            </b-button>
-          </div>
         </div>
-      </div>
-    </b-modal>
-    <b-input
-      @keydown.native.enter="addColumn"
-      placeholder="add new Status"
-      v-model="newStatus"
-      >add column</b-input
-    >
-  </div>
+      </b-modal>
+      <b-input
+        @keydown.native.enter="addColumn"
+        placeholder="Add a group"
+        v-model="newStatus"
+        class="inputNew"
+        >add column</b-input
+      >
+    </div>
+  </client-only>
 </template>
 
 <script>
@@ -105,6 +113,7 @@ export default {
       );
       console.log("deleting this task: ", this.currList[taskIndex].t_name);
       this.currList.splice(taskIndex, 1);
+      this.isCardModalActive = false;
     },
     save() {
       console.log(this.taskList);
@@ -124,19 +133,21 @@ export default {
         // console.log(this.taskList);
         this.taskList = JSON.parse(localStorage.getItem(`taskList`) || "[]");
         // console.log(this.taskList);
+      } else {
+        localStorage.setItem("taskList", JSON.stringify(this.taskList));
       }
     }
   },
-  mounted() {
-    if (process.browser) {
-      if (localStorage.taskList) {
-        console.log("mounted");
-        // console.log(this.taskList);
-        this.taskList = JSON.parse(localStorage.getItem(`taskList`) || "[]");
-        // console.log(this.taskList);
-      }
-    }
-  },
+  // mounted() {
+  //   if (process.browser) {
+  //     if (localStorage.taskList) {
+  //       console.log("mounted");
+  //       // console.log(this.taskList);
+  //       this.taskList = JSON.parse(localStorage.getItem(`taskList`) || "[]");
+  //       // console.log(this.taskList);
+  //     }
+  //   }
+  // },
   watch: {
     // WATCH FOR CHANGES IN STATUS ARRAYS AND AUTOMATICALLY SAVE!
     taskList: {

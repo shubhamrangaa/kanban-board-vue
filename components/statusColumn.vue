@@ -65,23 +65,27 @@ export default {
       };
     },
     serial() {
-      let existing = JSON.parse(localStorage.getItem(`taskList`) || "[]");
-      let i = 0;
-      while (i < 100) {
-        if (existing[i].name == this.name) {
-          break;
+      if (process.browser) {
+        let existing = JSON.parse(localStorage.getItem(`taskList`) || "[]");
+        var i = 0;
+        while (i < 100) {
+          if (existing[i].name == this.name) {
+            break;
+          }
+          i++;
         }
-        i++;
       }
       return i;
     }
   },
   watch: {
     alteredList(newstuff) {
-      let existing = JSON.parse(localStorage.getItem(`taskList`) || "[]");
-      existing[this.serial].content = newstuff;
-      localStorage.setItem("taskList", JSON.stringify(existing));
-      console.log("watching component");
+      if (process.browser) {
+        let existing = JSON.parse(localStorage.getItem(`taskList`) || "[]");
+        existing[this.serial].content = newstuff;
+        localStorage.setItem("taskList", JSON.stringify(existing));
+        console.log("watching component");
+      }
     },
     isDragging(newValue) {
       if (newValue) {

@@ -13,19 +13,18 @@
   background-color: rgb(255, 255, 255);
 }
 
+.groupColumnContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
 .sortable {
-  background-color: aliceblue;
+  background-color: rgb(255, 255, 255);
   color: black;
+  border: 1px solid rgb(214, 214, 214);
+  box-shadow: 2px 3px #e2e2e2;
   padding: 0.5rem 1rem;
   margin: 0.25rem;
   text-align: left;
-}
-
-.groupContainer {
-  display: flex;
-  flex-direction: column;
-
-  min-width: 250px;
 }
 
 .inputNew input {
