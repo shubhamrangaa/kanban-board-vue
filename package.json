@@ -1,0 +1,19 @@
+{
+  "name": "nuxt-kanban",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "core-js": "^3.15.1",
+    "nuxt": "^2.15.7",
+    "nuxt-buefy": "^0.4.8",
+    "uuid": "^8.3.2",
+    "vuedraggable": "^2.24.3"
+  },
+  "devDependencies": {}
+}

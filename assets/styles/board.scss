@@ -1,0 +1,33 @@
+// HOME PAGE STYLES
+.homeContainer {
+  h1 {
+    font-size: 4rem;
+  }
+}
+
+.dragContainer {
+  display: flex;
+  justify-content: center;
+  color: black;
+  width: 100%;
+  background-color: rgb(255, 255, 255);
+}
+
+.sortable {
+  background-color: aliceblue;
+  color: black;
+  padding: 0.5rem 1rem;
+  margin: 0.25rem;
+  text-align: left;
+}
+
+.groupContainer {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 250px;
+}
+
+.inputNew input {
+  border: none;
+}
