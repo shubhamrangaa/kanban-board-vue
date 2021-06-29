@@ -11,11 +11,11 @@
   color: black;
   width: 100%;
   background-color: rgb(255, 255, 255);
+  flex-wrap: wrap;
 }
 
 .groupColumnContainer {
   display: flex;
-  flex-wrap: wrap;
 }
 .sortable {
   background-color: rgb(255, 255, 255);
