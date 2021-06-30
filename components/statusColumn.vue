@@ -1,12 +1,15 @@
 <template>
   <c-box m="10px" width="240px">
-    <c-badge variant-color="indigo" font-size=".85em"
+    <c-badge variant-color="indigo" mb="5px" font-size=".85em"
       >{{ name }} - {{ alteredList.length }}
     </c-badge>
     <draggable v-model="alteredList" v-bind="dragOptions">
       <transition-group class="groupContainer">
         <c-box
+          cursor="grab"
           p="12px 10px"
+          shadow="box-shadow: 2px 3px #e2e2e2;"
+          m="4px 0px"
           v-for="element in alteredList"
           :key="element.id"
           @click="$emit('open-modal', element, alteredList, name)"

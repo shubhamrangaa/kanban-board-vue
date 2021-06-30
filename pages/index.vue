@@ -5,22 +5,44 @@
     justify="start"
     direction="column"
     height="100vh"
+    p="1rem"
   >
-    <nav role="navigation" aria-label="main navigation">
+    <c-flex
+      role="navigation"
+      p="1rem"
+      justify="space-between"
+      align="center"
+      width="100%"
+    >
       <h4>Kanban</h4>
-      <a clas href="https://github.com/shubhamrangaa/kanban-board-vue"
-        >View code on GitHub</a
-      >
-    </nav>
+      <c-stack is-inline align="center" gap="10px">
+        <a
+          href="https://github.com/shubhamrangaa/kanban-board-vue"
+          target="_blank"
+          >GitHub</a
+        >
+        <!-- <c-switch color="cyan" size="lg" @click="$toggleColorMode" /> -->
+
+        <CIconButton
+          cursor="pointer"
+          border="none"
+          :icon="colorMode === 'light' ? 'moon' : 'sun'"
+          :variant-color="colorMode === 'light' ? 'indigo' : 'yellow'"
+          @click="$toggleColorMode"
+          :aria-label="
+            `Switch to ${colorMode === 'light' ? 'dark' : 'light'} mode`
+          "
+        />
+      </c-stack>
+    </c-flex>
 
     <c-divider />
-    <c-stack is-inline>
-      <c-switch color="cyan" size="lg" @click="$toggleColorMode" />
-    </c-stack>
-
-    Chakra ColorMode: {{ colorMode }}
-    <h1>Kanban Board</h1>
-    <board></board>
+    <c-box max-width="1250px" m="0 auto">
+      <c-heading as="h1" size="2xl" mb="2rem">
+        ⚡ Kanban Board
+      </c-heading>
+      <board></board>
+    </c-box>
   </c-flex>
 </template>
 

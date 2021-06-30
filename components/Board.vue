@@ -1,11 +1,8 @@
 <template>
   <client-only>
     <c-flex>
-      <c-box
-        v-for="list in taskList"
-        :key="list.name"
-        class="groupColumnContainer"
-      >
+      <c-box v-for="list in taskList" :key="list.name">
+        <!-- class="groupColumnContainer" -->
         <status-column
           :list.sync="list.content"
           :name="list.name"

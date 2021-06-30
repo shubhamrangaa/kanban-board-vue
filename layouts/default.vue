@@ -1,5 +1,6 @@
 <template>
   <CThemeProvider>
+    <CReset />
     <CColorModeProvider>
       <Nuxt />
     </CColorModeProvider>
