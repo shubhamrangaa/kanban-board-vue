@@ -1,6 +1,12 @@
 <template>
   <client-only>
-    <c-flex>
+    <c-flex
+      wrap="nowrap"
+      overflowX="scroll"
+      pb="2rem"
+      class="boardContainer"
+      align="start"
+    >
       <c-box v-for="list in taskList" :key="list.name">
         <!-- class="groupColumnContainer" -->
         <status-column
@@ -9,36 +15,7 @@
           @open-modal="openModal"
         ></status-column>
       </c-box>
-
-      <!-- MODAL FOR TASKS -->
-      <!-- <b-modal v-model="isCardModalActive" :width="640" scroll="keep">
-        <div class="card">
-          <div class="card-content">
-            <div class="media">
-              <div class="media-content">
-                <h4>Status: {{ currStatus }}</h4>
-                <b-input
-                  :value="currTask.t_name"
-                  class="title is-4"
-                  v-model="currTask.t_name"
-                >
-                </b-input>
-              </div>
-            </div>
-
-            <div class="content">
-              <b-input
-                :value="currTask.description"
-                v-model="currTask.description"
-              >
-              </b-input>
-              <b-button @click="handleDelete()">
-                delete task
-              </b-button>
-            </div>
-          </div>
-        </div>
-      </b-modal> -->
+      <!-- TASK MODAL -->
       <c-modal
         :is-open="isOpen"
         :on-close="close"
@@ -46,16 +23,27 @@
         is-centered
       >
         <c-modal-content ref="content">
-          <c-modal-header>Status: {{ currStatus }}</c-modal-header>
+          <c-modal-header>
+            <c-badge variant-color="indigo" mb="5px" font-size=".85em">
+              {{ currStatus }}
+            </c-badge>
+          </c-modal-header>
           <c-modal-close-button />
           <c-modal-body>
             <c-box>
-              <c-input v-model="currTask.t_name"> </c-input>
-              <c-editable v-model="currTask.t_name" font-size="2xl">
-                <c-editable-preview />
-                <c-editable-input />
-              </c-editable>
-              <c-input v-model="currTask.description"> </c-input>
+              <c-input
+                v-model="currTask.t_name"
+                mb="1rem"
+                variant="unstyled"
+                font-size="2xl"
+              >
+              </c-input>
+
+              <c-input
+                v-model="currTask.description"
+                placeholder="Add a description"
+              >
+              </c-input>
             </c-box>
           </c-modal-body>
           <c-modal-footer>
@@ -65,18 +53,18 @@
             <c-button variant-color="red" mr="3" @click="handleDelete()">
               Delete
             </c-button>
-            <c-button @click="close">Cancel</c-button>
+            <!-- <c-button @click="close">Cancel</c-button> -->
           </c-modal-footer>
         </c-modal-content>
         <c-modal-overlay />
       </c-modal>
       <c-input
         @keydown.native.enter="addColumn"
-        placeholder="Add a group"
+        placeholder="+ Group"
         v-model="newStatus"
-        class="inputNew"
-        >add column</c-input
-      >
+        minW="200px"
+        variant="unstyled"
+      ></c-input>
     </c-flex>
   </client-only>
 </template>

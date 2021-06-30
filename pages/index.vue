@@ -37,10 +37,11 @@
     </c-flex>
 
     <c-divider />
-    <c-box max-width="1250px" m="0 auto">
+    <c-box m="0 auto" maxW="1250px">
       <c-heading as="h1" size="2xl" mb="2rem">
         ⚡ Kanban Board
       </c-heading>
+
       <board></board>
     </c-box>
   </c-flex>

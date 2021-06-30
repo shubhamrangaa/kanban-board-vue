@@ -1,14 +1,15 @@
 <template>
-  <c-box m="10px" width="240px">
+  <c-box m="10px" width="240px" minH="100px">
     <c-badge variant-color="indigo" mb="5px" font-size=".85em"
       >{{ name }} - {{ alteredList.length }}
     </c-badge>
     <draggable v-model="alteredList" v-bind="dragOptions">
       <transition-group class="groupContainer">
         <c-box
+          :backgroundColor="colorMode === 'light' ? '#fff' : '#202836'"
+          :boxShadow="colorMode === 'light' ? '0px 3px 8px #e2e2e2' : '0'"
           cursor="grab"
           p="12px 10px"
-          shadow="box-shadow: 2px 3px #e2e2e2;"
           m="4px 0px"
           v-for="element in alteredList"
           :key="element.id"
@@ -29,6 +30,7 @@
       placeholder="+ New"
       v-model="newtask"
       class="inputNew"
+      variant="unstyled"
       @keydown.native.enter="add()"
     ></c-input>
   </c-box>
@@ -42,6 +44,7 @@ export default {
   components: {
     draggable
   },
+  inject: ["$chakraColorMode", "$toggleColorMode"],
   props: ["list", "name"],
   data() {
     return {
@@ -66,6 +69,10 @@ export default {
     }
   },
   computed: {
+    colorMode() {
+      console.log(this.$chakraColorMode());
+      return this.$chakraColorMode();
+    },
     dragOptions() {
       return {
         animation: 250,

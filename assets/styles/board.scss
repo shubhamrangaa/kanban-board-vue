@@ -1,9 +1,4 @@
 // HOME PAGE STYLES
-.homeContainer {
-  h1 {
-    font-size: 4rem;
-  }
-}
 
 .dragContainer {
   display: flex;
@@ -19,6 +14,7 @@
   color: black;
   border: 1px solid rgb(214, 214, 214);
   box-shadow: 2px 3px #e2e2e2;
+  box-shadow: 2px 3px #202836;
   padding: 0.5rem 1rem;
   margin: 0.25rem;
   text-align: left;
@@ -27,4 +23,38 @@
 .inputNew input {
   box-shadow: 2px 3px #e2e2e2;
   border: none;
+}
+.boardContainer {
+  @media only screen and (max-width: 1250px) {
+    max-width: 1025px;
+  }
+  @media only screen and (max-width: 1025px) {
+    max-width: 600px;
+  }
+  @media only screen and (max-width: 600px) {
+    max-width: 325px;
+  }
+}
+
+/* width */
+::-webkit-scrollbar {
+  height: 5px;
+  width: 5px;
+  cursor: pointer;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #d2b5ff;
+  cursor: pointer;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #d3b5ff93;
 }
