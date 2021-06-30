@@ -1,31 +1,38 @@
 <template>
-  <div class="statusContainer">
-    <h3>{{ name }} - {{ alteredList.length }}</h3>
+  <c-box m="10px" width="240px">
+    <c-badge variant-color="indigo" font-size=".85em"
+      >{{ name }} - {{ alteredList.length }}
+    </c-badge>
     <draggable v-model="alteredList" v-bind="dragOptions">
       <transition-group class="groupContainer">
-        <div
-          class="sortable"
+        <c-box
+          p="12px 10px"
           v-for="element in alteredList"
           :key="element.id"
           @click="$emit('open-modal', element, alteredList, name)"
         >
           {{ element.t_name }}
-        </div>
+        </c-box>
       </transition-group>
     </draggable>
     <!-- ADD NEW TASK -->
-    <b-input
-      placeholder="New"
+    <!-- <c-input-group>
+      <c-input-left-element color="gray.300" fontSize="1.2em"
+        >+</c-input-left-element
+      >
+      
+    </c-input-group> -->
+    <c-input
+      placeholder="+ New"
       v-model="newtask"
       class="inputNew"
       @keydown.native.enter="add()"
-    ></b-input>
-  </div>
+    ></c-input>
+  </c-box>
 </template>
 
 <script>
 import draggable from "vuedraggable";
-import "buefy/dist/buefy.css";
 import { v4 as uuidv4 } from "uuid";
 export default {
   name: "StatusColumn",
@@ -105,6 +112,6 @@ export default {
 @import "../assets/styles/board.scss";
 
 .ghost {
-  background-color: rgb(253, 238, 255);
+  background-color: #d2b5ff;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <client-only>
-    <div class="dragContainer">
-      <div
+    <c-flex>
+      <c-box
         v-for="list in taskList"
         :key="list.name"
         class="groupColumnContainer"
@@ -11,10 +11,10 @@
           :name="list.name"
           @open-modal="openModal"
         ></status-column>
-      </div>
+      </c-box>
 
       <!-- MODAL FOR TASKS -->
-      <b-modal v-model="isCardModalActive" :width="640" scroll="keep">
+      <!-- <b-modal v-model="isCardModalActive" :width="640" scroll="keep">
         <div class="card">
           <div class="card-content">
             <div class="media">
@@ -41,15 +41,46 @@
             </div>
           </div>
         </div>
-      </b-modal>
-      <b-input
+      </b-modal> -->
+      <c-modal
+        :is-open="isOpen"
+        :on-close="close"
+        :closeOnOverlayClick="true"
+        is-centered
+      >
+        <c-modal-content ref="content">
+          <c-modal-header>Status: {{ currStatus }}</c-modal-header>
+          <c-modal-close-button />
+          <c-modal-body>
+            <c-box>
+              <c-input v-model="currTask.t_name"> </c-input>
+              <c-editable v-model="currTask.t_name" font-size="2xl">
+                <c-editable-preview />
+                <c-editable-input />
+              </c-editable>
+              <c-input v-model="currTask.description"> </c-input>
+            </c-box>
+          </c-modal-body>
+          <c-modal-footer>
+            <c-button variant-color="gray" mr="3">
+              Save
+            </c-button>
+            <c-button variant-color="red" mr="3" @click="handleDelete()">
+              Delete
+            </c-button>
+            <c-button @click="close">Cancel</c-button>
+          </c-modal-footer>
+        </c-modal-content>
+        <c-modal-overlay />
+      </c-modal>
+      <c-input
         @keydown.native.enter="addColumn"
         placeholder="Add a group"
         v-model="newStatus"
         class="inputNew"
-        >add column</b-input
+        >add column</c-input
       >
-    </div>
+    </c-flex>
   </client-only>
 </template>
 
@@ -66,7 +97,7 @@ export default {
       currStatus: "",
       currList: "",
       currTask: {},
-      isCardModalActive: false,
+      isOpen: false,
       newtask: "",
       newStatus: "",
       taskList: [
@@ -102,10 +133,13 @@ export default {
       // console.log(element);
       // console.log(list);
       // console.log(listName);
-      this.isCardModalActive = true;
+      this.isOpen = true;
       this.currList = list;
       this.currTask = element;
       this.currStatus = listName;
+    },
+    close() {
+      this.isOpen = false;
     },
     handleDelete() {
       const taskIndex = this.currList.findIndex(
@@ -113,7 +147,7 @@ export default {
       );
       console.log("deleting this task: ", this.currList[taskIndex].t_name);
       this.currList.splice(taskIndex, 1);
-      this.isCardModalActive = false;
+      this.isOpen = false;
     },
     save() {
       console.log(this.taskList);

@@ -14,9 +14,6 @@
   flex-wrap: wrap;
 }
 
-.groupColumnContainer {
-  display: flex;
-}
 .sortable {
   background-color: rgb(255, 255, 255);
   color: black;
@@ -28,5 +25,6 @@
 }
 
 .inputNew input {
+  box-shadow: 2px 3px #e2e2e2;
   border: none;
 }
