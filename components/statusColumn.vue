@@ -3,8 +3,8 @@
     <c-badge variant-color="indigo" mb="5px" font-size=".85em"
       >{{ name }} - {{ alteredList.length }}
     </c-badge>
-    <draggable v-model="alteredList" v-bind="dragOptions">
-      <transition-group class="groupContainer">
+    <draggable v-model="alteredList" v-bind="dragOptions" class="draggable">
+      <transition-group>
         <c-box
           :backgroundColor="colorMode === 'light' ? '#fff' : '#202836'"
           :boxShadow="colorMode === 'light' ? '0px 3px 8px #e2e2e2' : '0'"
@@ -20,12 +20,7 @@
       </transition-group>
     </draggable>
     <!-- ADD NEW TASK -->
-    <!-- <c-input-group>
-      <c-input-left-element color="gray.300" fontSize="1.2em"
-        >+</c-input-left-element
-      >
-      
-    </c-input-group> -->
+
     <c-input
       placeholder="+ New"
       v-model="newtask"

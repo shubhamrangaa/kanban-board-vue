@@ -39,11 +39,11 @@
               >
               </c-input>
 
-              <c-input
+              <c-textarea
                 v-model="currTask.description"
                 placeholder="Add a description"
               >
-              </c-input>
+              </c-textarea>
             </c-box>
           </c-modal-body>
           <c-modal-footer>
@@ -119,6 +119,7 @@ export default {
       // console.log(list);
       // console.log(listName);
       this.isOpen = true;
+
       this.currList = list;
       this.currTask = element;
       this.currStatus = listName;
@@ -143,6 +144,7 @@ export default {
         name: this.newStatus,
         content: [{ t_name: "shower", id: uuidv4() }]
       });
+      this.newStatus = "";
     }
   },
   created() {
